@@ -55,22 +55,19 @@ function backspace() {
 function calculateExpression() {
     let { displayValue, parenthesesCount } = calculator;
 
+    // Menutup semua tanda kurung yang terbuka
     while (parenthesesCount > 0) {
         displayValue += ")";
         parenthesesCount -= 1;
     }
 
-    // Replace visual operators with actual operators for calculation
+    // Ganti operator visual dengan operator matematika yang sesuai
     displayValue = displayValue.replace(/×/g, '*').replace(/÷/g, '/');
 
     try {
-        let result = eval(displayValue);
-
-        if (result === 2) {
-            calculator.displayValue = 'I LOVE YOU';
-        } else {
-            calculator.displayValue = `${result}`;
-        }
+        // Menggunakan math.js untuk evaluasi ekspresi
+        let result = math.evaluate(displayValue);
+        calculator.displayValue = result === 2 ? 'I LOVE YOU' : `${result}`;
     } catch {
         calculator.displayValue = 'Error';
     }
@@ -123,3 +120,4 @@ keys.addEventListener('click', (event) => {
 });
 
 updateDisplay(); // Initial display update
+
